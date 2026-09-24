@@ -7,6 +7,39 @@
 
   <h1>My Daily Notes</h1>
 
+  <input id="noteInput" type="text" placeholder="Write a note...">
+  <button onclick="addNote()">Add Note</button>
+
+  <div id="notes"></div>
+
+  <script>
+    function addNote() {
+      const input = document.getElementById("noteInput");
+      const notes = document.getElementById("notes");
+
+      if (input.value.trim() === "") {
+        return;
+      }
+
+      const note = document.createElement("p");
+      note.textContent = input.value;
+
+      notes.appendChild(note);
+
+      input.value = "";
+    }
+  </script>
+
+</body>
+</html><!DOCTYPE html>
+<html>
+<head>
+  <title>Daily Notes</title>
+</head>
+<body>
+
+  <h1>My Daily Notes</h1>
+
   <input type="text" placeholder="Write a note...">
   <button>Add Note</button>
 
