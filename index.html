@@ -2,114 +2,175 @@
 <html>
 <head>
   <title>Daily Notes</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 40px auto;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    input {
+      padding: 10px;
+      width: 60%;
+    }
+
+    button {
+      padding: 10px;
+      margin: 5px;
+      cursor: pointer;
+    }
+
+    .note {
+      padding: 10px;
+      margin-top: 10px;
+      border: 1px solid #ccc;
+    }
+
+    .note-text {
+      display: inline-block;
+      width: 60%;
+    }
+  </style>
 </head>
+
 <body>
 
   <h1>My Daily Notes</h1>
 
-  <input id="noteInput" type="text" placeholder="Write a note...">
+  <!-- Add Note -->
+  <input
+    id="noteInput"
+    type="text"
+    placeholder="Write a note..."
+  >
+
   <button onclick="addNote()">Add Note</button>
+
+  <br><br>
+
+  <!-- Search -->
+  <input
+    id="searchInput"
+    type="text"
+    placeholder="Search notes..."
+    oninput="displayNotes()"
+  >
 
   <div id="notes"></div>
 
   <script>
-    let savedNotes = JSON.parse(localStorage.getItem("notes")) || [];
 
+    // Browser मधून saved notes घेणे
+    let savedNotes =
+      JSON.parse(localStorage.getItem("notes")) || [];
+
+
+    // Notes screen वर दाखवणे
     function displayNotes() {
+
       const notes = document.getElementById("notes");
+      const search =
+        document.getElementById("searchInput").value.toLowerCase();
+
       notes.innerHTML = "";
 
-1function displayNotes() {
-  const notes = document.getElementById("notes");
-  notes.innerHTML = "";
+      savedNotes.forEach(function(note, index) {
 
-  savedNotes.forEach(function(note, index) {
-    const p = document.createElement("p");
-    p.textContent = note + " ";
+        // Search filter
+        if (!note.toLowerCase().includes(search)) {
+          return;
+        }
 
-    const deleteButton = document.createElement("button");
-    deleteButton.textContent = "Delete";
+        const noteDiv = document.createElement("div");
+        noteDiv.className = "note";
 
-    deleteButton.onclick = function() {
-      savedNotes.splice(index, 1);
-      localStorage.setItem("notes", JSON.stringify(savedNotes));
-      displayNotes();
-    };
+        const noteText = document.createElement("span");
+        noteText.className = "note-text";
+        noteText.textContent = note;
 
-    p.appendChild(deleteButton);
-    notes.appendChild(p);
-  });
-}      savedNotes.forEach(function(note) {
-        const p = document.createElement("p");
-        p.textContent = note;
-        notes.appendChild(p);
+        // Edit button
+        const editButton = document.createElement("button");
+        editButton.textContent = "Edit";
+
+        editButton.onclick = function() {
+
+          const newNote = prompt("Edit your note:", note);
+
+          if (newNote !== null && newNote.trim() !== "") {
+
+            savedNotes[index] = newNote;
+
+            localStorage.setItem(
+              "notes",
+              JSON.stringify(savedNotes)
+            );
+
+            displayNotes();
+          }
+        };
+
+
+        // Delete button
+        const deleteButton = document.createElement("button");
+        deleteButton.textContent = "Delete";
+
+        deleteButton.onclick = function() {
+
+          savedNotes.splice(index, 1);
+
+          localStorage.setItem(
+            "notes",
+            JSON.stringify(savedNotes)
+          );
+
+          displayNotes();
+        };
+
+
+        noteDiv.appendChild(noteText);
+        noteDiv.appendChild(editButton);
+        noteDiv.appendChild(deleteButton);
+
+        notes.appendChild(noteDiv);
       });
     }
 
-    function addNote() {
-      const input = document.getElementById("noteInput");
 
-      if (input.value.trim() === "") {
+    // नवीन note add करणे
+    function addNote() {
+
+      const input =
+        document.getElementById("noteInput");
+
+      const note = input.value.trim();
+
+      if (note === "") {
         return;
       }
 
-      savedNotes.push(input.value);
+      savedNotes.push(note);
 
-      localStorage.setItem("notes", JSON.stringify(savedNotes));
+      localStorage.setItem(
+        "notes",
+        JSON.stringify(savedNotes)
+      );
 
       input.value = "";
 
       displayNotes();
     }
 
+
+    // Page load झाल्यावर notes दाखवणे
     displayNotes();
+
   </script>
-
-</body>
-</html><!DOCTYPE html>
-<html>
-<head>
-  <title>Daily Notes</title>
-</head>
-<body>
-
-  <h1>My Daily Notes</h1>
-
-  <input id="noteInput" type="text" placeholder="Write a note...">
-  <button onclick="addNote()">Add Note</button>
-
-  <div id="notes"></div>
-
-  <script>
-    function addNote() {
-      const input = document.getElementById("noteInput");
-      const notes = document.getElementById("notes");
-
-      if (input.value.trim() === "") {
-        return;
-      }
-
-      const note = document.createElement("p");
-      note.textContent = input.value;
-
-      notes.appendChild(note);
-
-      input.value = "";
-    }
-  </script>
-
-</body>
-</html><!DOCTYPE html>
-<html>
-<head>
-  <title>Daily Notes</title>
-</head>
-<body>
-
-  <h1>My Daily Notes</h1>
-
-  <input type="text" placeholder="Write a note...">
-  <button>Add Note</button>
 
 </body>
 </html>
