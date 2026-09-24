@@ -19,7 +19,27 @@
       const notes = document.getElementById("notes");
       notes.innerHTML = "";
 
-      savedNotes.forEach(function(note) {
+1function displayNotes() {
+  const notes = document.getElementById("notes");
+  notes.innerHTML = "";
+
+  savedNotes.forEach(function(note, index) {
+    const p = document.createElement("p");
+    p.textContent = note + " ";
+
+    const deleteButton = document.createElement("button");
+    deleteButton.textContent = "Delete";
+
+    deleteButton.onclick = function() {
+      savedNotes.splice(index, 1);
+      localStorage.setItem("notes", JSON.stringify(savedNotes));
+      displayNotes();
+    };
+
+    p.appendChild(deleteButton);
+    notes.appendChild(p);
+  });
+}      savedNotes.forEach(function(note) {
         const p = document.createElement("p");
         p.textContent = note;
         notes.appendChild(p);
