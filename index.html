@@ -13,6 +13,54 @@
   <div id="notes"></div>
 
   <script>
+    let savedNotes = JSON.parse(localStorage.getItem("notes")) || [];
+
+    function displayNotes() {
+      const notes = document.getElementById("notes");
+      notes.innerHTML = "";
+
+      savedNotes.forEach(function(note) {
+        const p = document.createElement("p");
+        p.textContent = note;
+        notes.appendChild(p);
+      });
+    }
+
+    function addNote() {
+      const input = document.getElementById("noteInput");
+
+      if (input.value.trim() === "") {
+        return;
+      }
+
+      savedNotes.push(input.value);
+
+      localStorage.setItem("notes", JSON.stringify(savedNotes));
+
+      input.value = "";
+
+      displayNotes();
+    }
+
+    displayNotes();
+  </script>
+
+</body>
+</html><!DOCTYPE html>
+<html>
+<head>
+  <title>Daily Notes</title>
+</head>
+<body>
+
+  <h1>My Daily Notes</h1>
+
+  <input id="noteInput" type="text" placeholder="Write a note...">
+  <button onclick="addNote()">Add Note</button>
+
+  <div id="notes"></div>
+
+  <script>
     function addNote() {
       const input = document.getElementById("noteInput");
       const notes = document.getElementById("notes");
